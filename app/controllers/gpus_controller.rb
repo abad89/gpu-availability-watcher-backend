@@ -1,0 +1,2 @@
+class GpusController < ApplicationController
+end
