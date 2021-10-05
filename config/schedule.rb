@@ -18,8 +18,3 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-
-
-every 5.minutes do
-    runner "Gpu.update_availability_all"
-end
