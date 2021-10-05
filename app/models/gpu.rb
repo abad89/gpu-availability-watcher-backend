@@ -1,9 +1,11 @@
 require 'net/http'
 require 'json'
 require './.api_key.rb'
-require './skus.rb'
 
 class Gpu < ApplicationRecord
+    has_many :usergpus
+    has_many :users, through: :usergpus
+
     @gpu_skus = [
         6429434,
         6471615,
