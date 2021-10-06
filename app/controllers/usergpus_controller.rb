@@ -6,7 +6,7 @@ class UsergpusController < ApplicationController
             usergpus=user.usergpus
             render json: usergpus, include: :gpu
         else
-            usergpus = Usergpus.all
+            usergpus = Usergpu.all
             render json: usergpus
         end
     end
