@@ -10,4 +10,34 @@ class UsergpusController < ApplicationController
             render json: usergpus
         end
     end
+
+    def create
+        usergpu = Usergpu.create(usergpu_params)
+        render json: usergpu, status: :created
+    end
+
+    def show
+        usergpu = find_usergpu
+        render json: usergpu
+    end
+
+    def destroy
+        usergpu = find_usergpu
+        if usergpu
+            usergpu.destroy
+            render json: {}
+        else
+            render json: { error: "not found" }, status: :not_found
+        end
+    end
+
+    private
+
+    def usergpu_params
+        params.permit(:user_id, :gpu_id)
+    end
+
+    def find_usergpu
+        Usergpu.find(params[:id])
+    end
 end
