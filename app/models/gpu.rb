@@ -126,12 +126,14 @@ class Gpu < ApplicationRecord
 
     def self.update_availability(sku)
         current_gpu = Gpu.find_by(sku: sku)
-        url = 'https://api.bestbuy.com/v1/products/'
-        args = '.onlineAvailability&apiKey='
-        uri = URI(url+sku.to_s+args+$api_key)
-        response = Net::HTTP.get(uri)
-        this_gpu = JSON.parse(response)
-        current_gpu.update(onlineAvailability: this_gpu["onlineAvailability"])
+        if current_gpu
+            url = 'https://api.bestbuy.com/v1/products/'
+            args = '.onlineAvailability&apiKey='
+            uri = URI(url+sku.to_s+args+$api_key)
+            response = Net::HTTP.get(uri)
+            this_gpu = JSON.parse(response)
+            current_gpu.update(onlineAvailability: this_gpu["onlineAvailability"])
+        end
     end
 
     def self.update_availability_all
@@ -139,10 +141,13 @@ class Gpu < ApplicationRecord
             Gpu.update_availability(sku)
             sleep(0.5)
         end
-        Update.first.increment(:count)
+        Update.first.increment!(:count)
     end
 
     
 end
 
 
+# if foo do
+
+# end
