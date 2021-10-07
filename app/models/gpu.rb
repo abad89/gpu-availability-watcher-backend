@@ -139,6 +139,7 @@ class Gpu < ApplicationRecord
             Gpu.update_availability(sku)
             sleep(0.5)
         end
+        Update.first.increment(:count)
     end
 
     
