@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :updates
   resources :usergpus
   resources :users do
     resources :gpus, :usergpus
