@@ -1,6 +1,6 @@
 require 'net/http'
 require 'json'
-require './.api_key.rb'
+# require './.api_key.rb'
 
 class Gpu < ApplicationRecord
     has_many :usergpus
@@ -111,7 +111,7 @@ class Gpu < ApplicationRecord
     def self.get_gpu(sku)
         url = 'https://api.bestbuy.com/v1/products/'
         args = '.json?show=active,sku,name,salePrice,onlineAvailability,orderable,url,largeImage&apiKey='
-        uri = URI(url+sku.to_s+args+$api_key)
+        uri = URI(url+sku.to_s+args+ENV[API_KEY])
         response = Net::HTTP.get(uri)
         this_gpu = JSON.parse(response)
         new_gpu = Gpu.create(name: this_gpu["name"], salePrice: this_gpu["salePrice"], sku: this_gpu["sku"], onlineAvailability: this_gpu["onlineAvailability"], url: this_gpu["url"], largeImage: this_gpu["largeImage"], active: this_gpu["active"])
@@ -129,7 +129,7 @@ class Gpu < ApplicationRecord
         if current_gpu
             url = 'https://api.bestbuy.com/v1/products/'
             args = '.onlineAvailability&apiKey='
-            uri = URI(url+sku.to_s+args+$api_key)
+            uri = URI(url+sku.to_s+args+ENV[API_KEY])
             response = Net::HTTP.get(uri)
             this_gpu = JSON.parse(response)
             current_gpu.update(onlineAvailability: this_gpu["onlineAvailability"])
