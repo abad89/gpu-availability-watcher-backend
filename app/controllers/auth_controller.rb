@@ -6,8 +6,10 @@ class AuthController < ApplicationController
             payload = {user_id: user.id}
             token = encode_token(payload)
             render json: {user: user, jwt: token, success: "Authenticated"}
+            puts "accepted"
         else
-            render json: {failure: "Wong username or password"}
+            render json: {errors: "Wrong username or password."}, status: :unauthorized
+            puts "not accepted"
         end
     end
 
