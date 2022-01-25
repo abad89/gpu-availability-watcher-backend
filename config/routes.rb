@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   end
   resources :gpus
   get "/auto_login", to: "auth#auto_login"
+  post "/login", to: "auth#login"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
