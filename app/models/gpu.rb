@@ -7,6 +7,7 @@ class Gpu < ApplicationRecord
     has_many :users, through: :usergpus
 
     @gpu_skus = [
+        4900942,
         6429434,
         6471615,
         6466561,
@@ -105,7 +106,9 @@ class Gpu < ApplicationRecord
         6480308,
         6479688,
         6467781,
-        6479685
+        6479685,
+        # debug sku:
+        6479500
     ]
     
     def self.get_gpu(sku)
@@ -128,11 +131,18 @@ class Gpu < ApplicationRecord
         current_gpu = Gpu.find_by(sku: sku)
         if current_gpu
             url = 'https://api.bestbuy.com/v1/products/'
-            args = '.onlineAvailability&apiKey='
+            args = '.json?show=onlineAvailability&apiKey='
             uri = URI(url+sku.to_s+args+ENV["API_KEY"])
             response = Net::HTTP.get(uri)
             this_gpu = JSON.parse(response)
             current_gpu.update(onlineAvailability: this_gpu["onlineAvailability"])
+            if current_gpu.onlineAvailability == true
+                puts "available true"
+                @users = User.all
+                @users.each do |user|
+                    UserMailer.with(user: user, gpu: current_gpu).gpu_available.deliver_now
+                end
+            end
         end
     end
 
@@ -146,8 +156,3 @@ class Gpu < ApplicationRecord
 
     
 end
-
-
-# if foo do
-
-# end

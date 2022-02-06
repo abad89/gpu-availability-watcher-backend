@@ -5,7 +5,12 @@ class UserMailer < ApplicationMailer
 
     def welcome_email
         @user = params[:user]
-        @url = 'http://example.com/login'
         mail(to: @user.email, subject: "Welcome to GPU Availability Watcher")
+    end
+
+    def gpu_available
+        @user = params[:user]
+        @gpu = params[:gpu]
+        mail(to: @user.email, subject: "GPU Now Available")
     end
 end
