@@ -15,6 +15,7 @@ class UsersController < ApplicationController
         payload = {user_id: user.id}
         token = encode_token(payload)
         render json: {user: user, jwt: token}, status: :created
+        UserMailer.with(user: user).welcome_email.deliver_later
     rescue ActiveRecord::RecordInvalid => invalid
         render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
     end
